@@ -8,4 +8,6 @@ return [
     'register_success' => 'Registration successful.',
     'login_success' => 'Login successful.',
     'logout_success' => 'Logged out successfully.',
+    'unauthenticated' => 'You are not authenticated.',
+    'unauthorized' => 'You do not have permission to perform this action.',
 ];

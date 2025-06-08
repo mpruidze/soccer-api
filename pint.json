@@ -10,6 +10,9 @@
       "import_constants": true,
       "import_functions": true
     },
+    "blank_line_after_opening_tag": true,
+    "blank_line_after_namespace": true,
+    "concat_space": true,
     "modernize_types_casting": true,
     "no_superfluous_elseif": true,
     "no_useless_else": true,
