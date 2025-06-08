@@ -3,21 +3,20 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\PlayersController;
+use App\Http\Controllers\TeamsController;
+use App\Http\Controllers\TransfersController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
+    Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/me', [AuthController::class, 'user']);
-
-    Route::group(['prefix' => 'team'], static function () {
-        // apiResource ->only gamoviyeno, route names mianichebs, testebshi gamomadgeba
-        Route::get('/', [TeamsController::class, 'index']);
-        Route::get('/{team}', [TeamsController::class, 'show']);
-        Route::put('/{team}', [TeamsController::class, 'update']);
-    });
+    Route::apiResource('/teams', TeamsController::class)->only(['show', 'update']);
+    Route::apiResource('/players', PlayersController::class)->only(['show', 'update']);
+    Route::apiResource('/transfers', TransfersController::class)->except('destroy');
 });

@@ -37,6 +37,13 @@ abstract class Controller
         return (array) $this->getRequest()->input('filters');
     }
 
+    protected function getInputPerPage(): ?int
+    {
+        $perPage = $this->getRequest()->input('perPage');
+
+        return $perPage ? (int) $perPage : 40;
+    }
+
     protected function getRequest(): Request
     {
         return app(Request::class);
