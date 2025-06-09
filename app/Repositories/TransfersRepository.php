@@ -45,7 +45,7 @@ class TransfersRepository implements TransfersRepositoryContract
 
     public function update(Transfer $transfer, array $data): Transfer
     {
-        tap($transfer)->update($data);
+        $transfer->update($data);
 
         return $transfer->load([
             'player',
