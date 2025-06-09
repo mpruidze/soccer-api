@@ -20,4 +20,7 @@ return [
     'integer' => ':attribute უნდა იყოს რიცხვი.',
     'boolean' => ':attribute უნდა იყოს true ან false.',
     'password' => 'პაროლი არასწორია.',
+    'numeric' => ':attribute უნდა იყოს რიცხვი.',
+    'unsigned_numeric' => ':attribute არ არის მთელი დადებითი რიცხვი.',
+    'enum' => 'არჩეული ატრიბუტი :attribute არავალიდურია.',
 ];

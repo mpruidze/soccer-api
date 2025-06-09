@@ -11,4 +11,6 @@ interface PlayersRepositoryContract
     public function find(Player $player): Player;
 
     public function update(Player $player, array $data): Player;
+
+    public function increasePlayerValue(Player $player): void;
 }

@@ -12,19 +12,19 @@ use Illuminate\Http\JsonResponse;
 
 class TeamsController extends Controller
 {
-    public function __construct(protected readonly TeamsService $teamService) {}
+    public function __construct(private readonly TeamsService $teamService) {}
 
     public function show(Team $team): JsonResponse
     {
         $team = $this->teamService->find($team);
 
-        return $this->success(new TeamResource($team));
+        return $this->response(new TeamResource($team));
     }
 
     public function update(TeamUpdateRequest $request, Team $team): JsonResponse
     {
         $team = $this->teamService->update($team, $request->validated());
 
-        return $this->success(new TeamResource($team));
+        return $this->response(new TeamResource($team));
     }
 }

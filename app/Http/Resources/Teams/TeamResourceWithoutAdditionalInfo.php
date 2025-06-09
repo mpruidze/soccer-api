@@ -7,7 +7,7 @@ namespace App\Http\Resources\Teams;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TeamResourceWithoutRelations extends JsonResource
+class TeamResourceWithoutAdditionalInfo extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -15,8 +15,6 @@ class TeamResourceWithoutRelations extends JsonResource
             'id' => $this->getId(),
             'name' => $this->getName(),
             'country' => $this->getCountry(),
-            'budget' => $this->getBudget(),
-            'value' => $this->getSumValue(),
         ];
     }
 }

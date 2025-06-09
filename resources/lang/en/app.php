@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'item_not_found' => 'Records not found',
+    'item_not_found' => 'Record not found.',
     'email' => 'Email',
     'name' => 'Name',
     'firstname' => 'Firstname',

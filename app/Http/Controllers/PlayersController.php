@@ -12,19 +12,19 @@ use Illuminate\Http\JsonResponse;
 
 class PlayersController extends Controller
 {
-    public function __construct(protected readonly PlayersService $playersService) {}
+    public function __construct(private readonly PlayersService $playersService) {}
 
     public function show(Player $player): JsonResponse
     {
         $player = $this->playersService->find($player);
 
-        return $this->success(new PlayerResource($player));
+        return $this->response(new PlayerResource($player));
     }
 
     public function update(PlayerUpdateRequest $request, Player $player): JsonResponse
     {
         $player = $this->playersService->update($player, $request->validated());
 
-        return $this->success(new PlayerResource($player));
+        return $this->response(new PlayerResource($player));
     }
 }

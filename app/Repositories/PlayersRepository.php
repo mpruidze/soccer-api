@@ -22,4 +22,11 @@ class PlayersRepository implements PlayersRepositoryContract
 
         return $player->load('team');
     }
+
+    public function increasePlayerValue(Player $player): void
+    {
+        $player->update([
+            'value' => $player->getValue() * (1 + random_int(10, 100) / 100),
+        ]);
+    }
 }

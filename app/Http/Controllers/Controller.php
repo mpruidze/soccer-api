@@ -6,35 +6,42 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 
 abstract class Controller
 {
-    protected function success(mixed $data = null, ?string $message = null, int $code = Response::HTTP_OK): JsonResponse
+    protected function response(mixed $data = null, ?string $message = null, int $code = Response::HTTP_OK): JsonResponse
     {
         $message ??= __('messages.success');
 
-        return response()->json([
+        $response = [
             'success' => true,
             'message' => $message,
             'data' => $data,
-        ], $code);
-    }
+        ];
 
-    protected function error(mixed $errors = null, ?string $message = null, int $code = Response::HTTP_BAD_REQUEST): JsonResponse
-    {
-        $message ??= __('messages.error');
+        if ($data instanceof ResourceCollection && method_exists($data, 'with')) {
+            $additionalInfo = $data->with($this->getRequest());
 
-        return response()->json([
-            'success' => false,
-            'message' => $message,
-            'errors' => $errors,
-        ], $code);
+            foreach (['meta', 'links'] as $key) {
+                if (isset($additionalInfo[$key])) {
+                    $response[$key] = $additionalInfo[$key];
+                }
+            }
+        }
+
+        return response()->json($response, $code);
     }
 
     protected function getInputFilters(): array
     {
         return (array) $this->getRequest()->input('filters');
+    }
+
+    protected function getInputPage(): int
+    {
+        return (int) $this->getRequest()->input('page', 1);
     }
 
     protected function getInputPerPage(): ?int
