@@ -10,6 +10,7 @@
       "import_constants": true,
       "import_functions": true
     },
+    "new_with_parentheses": false,
     "blank_line_after_opening_tag": true,
     "blank_line_after_namespace": true,
     "concat_space": true,
