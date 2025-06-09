@@ -6,19 +6,16 @@ namespace App\Services\Auth;
 
 use App\Contracts\Repositories\UsersRepositoryContract;
 use App\Models\User;
-use App\Services\PlayersService;
-use App\Services\TeamsService;
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Services\Service;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
-class AuthService
+class AuthService extends Service
 {
     public function __construct(
         private readonly UsersRepositoryContract $usersRepository,
-        private readonly TeamsService $teamsService,
-        private readonly PlayersService $playersService,
         private readonly Connection $db,
     ) {}
 
@@ -26,8 +23,8 @@ class AuthService
     {
         $user = $this->db->transaction(function () use ($data) {
             $user = $this->usersRepository->create($data);
-            $team = $this->teamsService->generateTeam($user);
-            $this->playersService->generatePlayers($team);
+
+            event(new Registered($user));
 
             return $user;
         });
@@ -49,15 +46,22 @@ class AuthService
         $this->getAuthUser()->currentAccessToken()->delete();
     }
 
-    private function getAuthUser(): Authenticatable
+    public function getAuthUser(array $relations = []): User
     {
-        return auth()->user();
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (! empty($relations)) {
+            $user->loadMissing($relations);
+        }
+
+        return $user;
     }
 
-    private function buildAuthResponse(User|Authenticatable $user): array
+    private function buildAuthResponse(User $user): array
     {
         return [
-            'user' => $user->only(['id', 'name', 'email']),
+            'user' => $user->toArray(),
             'token' => $user->createToken('api')->plainTextToken,
         ];
     }
