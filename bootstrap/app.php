@@ -24,20 +24,13 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->renderable(function (AuthenticationException $exception, $request) {
-            if ($request->expectsJson()) {
+            if ($request->wantsJson()) {
                 return response()->json(['message' => __('auth.unauthenticated')], 401);
             }
             throw $exception;
         });
-        $exceptions->renderable(function (AccessDeniedHttpException $exception, $request) {
-            if ($request->expectsJson()) {
-                return response()->json(['message' => __('auth.unauthorized')], 403);
-            }
-
-            throw $exception;
-        });
-        $exceptions->renderable(function (NotFoundHttpException $exception, $request) {
-            if ($request->expectsJson()) {
+        $exceptions->renderable(function (NotFoundHttpException|AccessDeniedHttpException $exception, $request) {
+            if ($request->wantsJson()) {
                 return response()->json(['message' => __('app.item_not_found')], 404);
             }
             throw $exception;
