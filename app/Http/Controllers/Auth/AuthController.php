@@ -13,33 +13,35 @@ use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    public function __construct(protected readonly AuthService $authService) {}
+    public function __construct(
+        private readonly AuthService $authService,
+    ) {}
 
     public function register(RegisterRequest $request): JsonResponse
     {
         $data = $this->authService->register($request->validated());
 
-        return $this->success($data, __('auth.register_success'), 201);
+        return $this->response($data, __('auth.register_success'), 201);
     }
 
     public function login(LoginRequest $request): JsonResponse
     {
         $data = $this->authService->login($request->validated());
 
-        return $this->success($data, __('auth.login_success'));
+        return $this->response($data, __('auth.login_success'));
     }
 
     public function logout(): JsonResponse
     {
         $this->authService->logout();
 
-        return $this->success(message: __('auth.logout_success'));
+        return $this->response(message: __('auth.logout_success'));
     }
 
-    public function user(): JsonResponse
+    public function getUser(): JsonResponse
     {
-        $user = $this->authService->getUser();
+        $user = $this->authService->getAuthUser(['team']);
 
-        return $this->success(new UserResource($user));
+        return $this->response(new UserResource($user));
     }
 }
