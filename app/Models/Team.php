@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,19 +17,52 @@ class Team extends Model
 
     protected $fillable = ['name', 'country'];
 
-    protected $casts = [
-        'budget' => 'decimal:2',
-    ];
-
     protected $attributes = [
         'budget' => 5000000.00,
     ];
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getCountry(): string
+    {
+        return $this->country;
+    }
+
+    public function getBudget(): string
+    {
+        return $this->budget;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
     public function getSumValue(): string
     {
-        $sumValue = $this->players->sum(fn ($player) => (float) $player->value);
+        $this->load('players');
+        /** @var Player $player */
+        $sumValue = $this->players->sum(fn ($player) => (float) $player->getValue());
 
         return number_format($sumValue, 2, '.', '');
+    }
+
+    public function getCreatedAt(): ?Carbon
+    {
+        return $this->created_at;
+    }
+
+    public function getUpdatedAt(): ?Carbon
+    {
+        return $this->updated_at;
     }
 
     public function user(): BelongsTo
@@ -39,5 +73,15 @@ class Team extends Model
     public function players(): HasMany
     {
         return $this->hasMany(Player::class);
+    }
+
+    public function transfersFrom(): HasMany
+    {
+        return $this->hasMany(Transfer::class, 'from_team_id');
+    }
+
+    public function transfersTo(): HasMany
+    {
+        return $this->hasMany(Transfer::class, 'to_team_id');
     }
 }

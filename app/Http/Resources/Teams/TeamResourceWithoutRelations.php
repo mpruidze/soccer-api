@@ -12,10 +12,10 @@ class TeamResourceWithoutRelations extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'country' => $this->country,
-            'budget' => $this->budget,
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'country' => $this->getCountry(),
+            'budget' => $this->getBudget(),
             'value' => $this->getSumValue(),
         ];
     }

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Players;
 
-use App\Http\Resources\Teams\TeamResourceWithoutRelations;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PlayerResource extends JsonResource
+class PlayerResourceWithoutAdditionalInfo extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -19,8 +18,6 @@ class PlayerResource extends JsonResource
             'age' => $this->getAge(),
             'country' => $this->getCountry(),
             'position' => $this->getTranslatedPosition(),
-            'value' => $this->getValue(),
-            'team' => new TeamResourceWithoutRelations($this->whenLoaded('team')),
         ];
     }
 }
