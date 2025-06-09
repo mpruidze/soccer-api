@@ -12,11 +12,12 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
-    Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
+    Route::get('/user', [AuthController::class, 'getUser'])->middleware('auth:sanctum');
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('/teams', TeamsController::class)->only(['show', 'update']);
     Route::apiResource('/players', PlayersController::class)->only(['show', 'update']);
     Route::apiResource('/transfers', TransfersController::class)->except('destroy');
+    Route::post('/transfers/{transfer}/status', [TransfersController::class, 'confirm'])->name('transfers.confirm');
 });

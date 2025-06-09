@@ -22,4 +22,13 @@ class TeamsRepository implements TeamsRepositoryContract
 
         return $team;
     }
+
+    public function changeBudget(Team $team, float $amount, bool $increase = true): void
+    {
+        if ($increase) {
+            $team->increment('budget', $amount);
+        } else {
+            $team->decrement('budget', $amount);
+        }
+    }
 }

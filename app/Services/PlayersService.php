@@ -42,10 +42,9 @@ class PlayersService extends Service
             Player::factory()
                 ->for($team)
                 ->count($count)
-                ->state([
+                ->create([
                     'position' => $position,
-                ])
-                ->create();
+                ]);
         }
     }
 }
