@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\User\UserResource;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
@@ -21,7 +22,7 @@ class AuthController extends Controller
     {
         $data = $this->authService->register($request->validated());
 
-        return $this->response($data, __('auth.register_success'), 201);
+        return $this->response($data, __('auth.register_success'), Response::HTTP_CREATED);
     }
 
     public function login(LoginRequest $request): JsonResponse

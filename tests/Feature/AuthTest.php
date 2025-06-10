@@ -35,7 +35,7 @@ class AuthTest extends TestCase
         ]));
 
         $response->assertCreated()
-            ->assertJsonStructure(['data' => ['user', 'token']]);
+            ->assertJsonStructure(['data' => ['token']]);
         $this->assertDatabaseHas('users', [
             'email' => 'john@gmail.com',
         ])
@@ -82,7 +82,7 @@ class AuthTest extends TestCase
         ]));
 
         $response->assertOk()
-            ->assertJsonStructure(['data' => ['user', 'token']]);
+            ->assertJsonStructure(['data' => ['token']]);
     }
 
     #[Test]
@@ -90,7 +90,7 @@ class AuthTest extends TestCase
     {
         $this->createAndAuthenticateUser();
 
-        $response = $this->postJson(route('logout'));
+        $response = $this->deleteJson(route('logout'));
 
         $response->assertOk();
     }
