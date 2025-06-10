@@ -39,7 +39,7 @@ class Transfer extends Model
 
     public function getPrice(): string
     {
-        return $this->price;
+        return (string) $this->price;
     }
 
     public function getIsTransferred(): bool
