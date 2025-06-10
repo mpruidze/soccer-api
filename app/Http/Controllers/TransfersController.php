@@ -14,6 +14,7 @@ use App\Models\Transfer;
 use App\Services\Auth\AuthService;
 use App\Services\TransfersService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class TransfersController extends Controller
 {
@@ -42,7 +43,7 @@ class TransfersController extends Controller
 
         $transfer = $this->transfersService->create($data);
 
-        return $this->response(new TransferResource($transfer));
+        return $this->response(new TransferResource($transfer), code: Response::HTTP_CREATED);
     }
 
     public function show(Transfer $transfer): JsonResponse

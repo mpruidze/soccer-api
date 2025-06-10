@@ -29,7 +29,7 @@ class AuthService extends Service
             return $user;
         });
 
-        return $this->buildAuthResponse($user);
+        return ['token' => $user->createToken('api')->plainTextToken];
     }
 
     public function login(array $data): array
@@ -38,7 +38,7 @@ class AuthService extends Service
             throw ValidationException::withMessages(['email' => __('auth.failed')]);
         }
 
-        return $this->buildAuthResponse($this->getAuthUser());
+        return ['token' => $this->getAuthUser()->createToken('api')->plainTextToken];
     }
 
     public function logout(): void
@@ -56,13 +56,5 @@ class AuthService extends Service
         }
 
         return $user;
-    }
-
-    private function buildAuthResponse(User $user): array
-    {
-        return [
-            'user' => $user->toArray(),
-            'token' => $user->createToken('api')->plainTextToken,
-        ];
     }
 }

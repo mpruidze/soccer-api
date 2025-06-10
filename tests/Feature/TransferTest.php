@@ -113,7 +113,7 @@ class TransferTest extends TestCase
             'price' => '9999',
         ]);
 
-        $response->assertOk()
+        $response->assertCreated()
             ->assertJsonStructure($this->transferStructure());
         $this->assertDatabaseHas('transfers', [
             'player_id' => $player->getId(),
@@ -193,7 +193,7 @@ class TransferTest extends TestCase
         /** @var \App\Models\Transfer $transfer */
         $transfer = $this->createTransfers(user: $user)->first();
 
-        $response = $this->postJson(route('transfers.confirm', $transfer->getId()), [
+        $response = $this->patchJson(route('transfers.confirm', $transfer->getId()), [
             'action' => 'random action',
         ]);
 
@@ -208,7 +208,7 @@ class TransferTest extends TestCase
         /** @var \App\Models\Transfer $transfer */
         $transfer = $this->createTransfers(user: $user)->first();
 
-        $response = $this->postJson(route('transfers.confirm', $transfer->getId()), [
+        $response = $this->patchJson(route('transfers.confirm', $transfer->getId()), [
             'action' => 'confirm',
         ]);
 
@@ -231,7 +231,7 @@ class TransferTest extends TestCase
             'is_transferred' => true,
         ])->first();
 
-        $response = $this->postJson(route('transfers.confirm', $randomTransfer->getId()), [
+        $response = $this->patchJson(route('transfers.confirm', $randomTransfer->getId()), [
             'action' => 'confirm',
         ]);
 
@@ -260,7 +260,7 @@ class TransferTest extends TestCase
         $randomTransfer = $this->createTransfers(user: $randomUser)->first();
         $transferPrice = $randomTransfer->getPrice();
 
-        $response = $this->postJson(route('transfers.confirm', $randomTransfer->getId()), [
+        $response = $this->patchJson(route('transfers.confirm', $randomTransfer->getId()), [
             'action' => 'confirm',
         ]);
 
