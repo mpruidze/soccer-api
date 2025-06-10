@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\PlayerPosition;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Player>
- */
 class PlayerFactory extends Factory
 {
     public function definition(): array
@@ -18,6 +16,7 @@ class PlayerFactory extends Factory
             'last_name' => fake()->lastName(),
             'age' => rand(18, 40),
             'country' => fake()->country(),
+            'position' => fake()->randomElement(PlayerPosition::cases())->value,
         ];
     }
 }

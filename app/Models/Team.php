@@ -38,7 +38,7 @@ class Team extends Model
 
     public function getBudget(): string
     {
-        return $this->budget;
+        return (string) $this->budget;
     }
 
     public function getUserId(): int
